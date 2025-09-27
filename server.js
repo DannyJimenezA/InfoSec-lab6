@@ -1,6 +1,6 @@
 "use strict";
 
-require('dotenv').config(); // <-- Agrega esta línea
+require('dotenv').config();
 
 // Imports
 const express = require("express");
@@ -18,14 +18,15 @@ const OKTA_CLIENT_ID = process.env.OKTA_CLIENT_ID;
 const OKTA_CLIENT_SECRET = process.env.OKTA_CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 const PORT = process.env.PORT || "3000";
-const SECRET = process.env.SECRET; // Dejar el secret así como está.
+const SECRET = process.env.SECRET;
+const BASE_URL = process.env.BASE_URL; // <-- Nueva línea
 
 //  Esto se los dará Okta.
 const config = {
   authRequired: false,
   auth0Logout: true,
   secret: SECRET,
-  baseURL: 'http://localhost:3000',
+  baseURL: BASE_URL, // <-- Cambiado aquí
   clientID: OKTA_CLIENT_ID,
   issuerBaseURL: OKTA_ISSUER_URI
 };
@@ -35,7 +36,7 @@ let oidc = new ExpressOIDC({
   client_id: OKTA_CLIENT_ID,
   client_secret: OKTA_CLIENT_SECRET,
   redirect_uri: REDIRECT_URI,
-  routes: { callback: { defaultRedirect: "http://localhost:3000/dashboard" } },
+  routes: { callback: { defaultRedirect: BASE_URL + "/dashboard" } }, // <-- Cambiado aquí
   scope: 'openid profile'
 });
 
